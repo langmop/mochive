@@ -1,10 +1,13 @@
 const express = require("express");
+const mongoose = require("./config/mongoose");
+const Comment = require("./model/comment");
+const saveData = require("./controller/saveUser");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const app = express();
 const passport = require("passport");
 const localStrategy = require("passport-local");
-const users = [];
+const User = require("./model/user");
 app.use(
   express.urlencoded({
     extended: false,
@@ -31,9 +34,37 @@ function check(req, res) {
   } else {
     return {
       name: req.user.name,
+      email: req.user.email,
     };
   }
 }
+
+app.get("/movie/:movie_id", async (req, res) => {
+  const comments = await Comment.find({ movie: req.params.movie_id });
+  // comments = "this is the first Comment";
+  const data = check(req, res);
+  if (data.name == null) {
+    return res.render("movie", data);
+  } else {
+    data["comments"] = comments;
+    data["post_req"] = "/comment/" + req.params.movie_id;
+    res.render("movie.ejs", data);
+  }
+});
+
+app.post("/comment/:movie_id", async (req, res) => {
+  const data = new Comment({
+    movie: req.params.movie_id,
+    comment: req.body.comment,
+    email: req.body.email,
+  });
+  try {
+    const result = await data.save();
+    res.redirect("/movie/" + req.params.movie_id);
+  } catch (err) {
+    res.redirect("/movie/" + req.params.movie_id);
+  }
+});
 
 app.get("/", (req, res) => {
   res.render("index.ejs", check(req, res));
@@ -60,15 +91,17 @@ app.get("/logout", (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     const encryptedPassword = await bcrypt.hash(req.body.password, 10);
-    users.push({
-      id: Date.now(),
-      email: req.body.email,
-      password: encryptedPassword,
-      name: req.body.name,
-    });
+    const result = await saveData(
+      encryptedPassword,
+      req.body.name,
+      req.body.email
+    );
 
-    console.log(users);
-    res.redirect("/login");
+    if (result) {
+      res.redirect("/login");
+    } else {
+      res.redirect("/register");
+    }
   } catch (err) {
     res.redirect("/register");
   }
@@ -88,10 +121,7 @@ passport.use(
       usernameField: "email",
     },
     async (email, password, done) => {
-      const current_user = users.find((element) => {
-        return element.email === email;
-      });
-
+      const current_user = await User.findOne({ email: email });
       if (current_user == null) {
         return done(null, false);
       } else {

@@ -1,0 +1,19 @@
+<h1>movies here</h1>
+<%if(name==null){%>
+<h1>Movie Showing</h1>
+<a href="/login">login</a>
+<br />
+<a href="/register">register</a>
+<%}else{%>
+<h1>hii <%=name%></h1>
+<br />
+<a href="/logout">logout</a>
+<%=comments%>
+<form action="<%=post_req%>" method="POST">
+  <label for="comment"> enter comment here </label>
+  <input type="text" name="comment" id="comment" />
+  <input type="hidden" name="email" id="email" value="<%=email%>" />
+  <button type="submit">submit comment</button>
+</form>
+<%}%>
+<br />
