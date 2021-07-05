@@ -1,0 +1,22 @@
+<link href="/css/main.css" rel="stylesheet" type="text/css" />
+<main id="main">
+  <%for(x in imageLinks){%>
+  <a href="<%=movieId[x]%>">
+    <div class="movie">
+      <img
+        src="<%=imageLinks[x]%>"
+        alt="image"
+        onerror="this.onerror=null; this.src='/images/image.png'"
+      />
+      <div class="movie-info">
+        <h3><%=movieNames[x]%></h3>
+        <span><%=rating[x]%></span>
+      </div>
+      <div class="overview">
+        <h3>overview</h3>
+        <%=description[x]%>
+      </div>
+    </div>
+  </a>
+  <%}%>
+</main>

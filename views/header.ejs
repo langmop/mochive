@@ -1,0 +1,35 @@
+<link href="/css/header.css" rel="stylesheet" type="text/css" />
+
+<header>
+  <a href="/"><img class="logo" src="/images/logo.png" alt="" /></a>
+  <form action="/query" method="POST" id="form">
+    <input
+      type="text"
+      name="movie_name"
+      placeholder="search"
+      id="search"
+      class="search"
+    />
+    <button type="submit">search</button>
+  </form>
+  <%if(name==null){%>
+  <nav>
+    <ul class="nav__links">
+      <li>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      </li>
+    </ul>
+  </nav>
+  <h2>Hello Mochiver</h2>
+  <%}else{%>
+  <nav>
+    <ul class="nav__links">
+      <li>
+        <a href="/logout">logout</a>
+      </li>
+    </ul>
+  </nav>
+  <h2>Hello <%=name%></h2>
+  <%}%>
+</header>

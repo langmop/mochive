@@ -1,19 +1,76 @@
-<h1>movies here</h1>
-<%if(name==null){%>
-<h1>Movie Showing</h1>
-<a href="/login">login</a>
-<br />
-<a href="/register">register</a>
-<%}else{%>
-<h1>hii <%=name%></h1>
-<br />
-<a href="/logout">logout</a>
-<%=comments%>
-<form action="<%=post_req%>" method="POST">
-  <label for="comment"> enter comment here </label>
-  <input type="text" name="comment" id="comment" />
-  <input type="hidden" name="email" id="email" value="<%=email%>" />
-  <button type="submit">submit comment</button>
-</form>
+<link href="/css/movie.css" rel="stylesheet" type="text/css" />
+<%if(name==null){%><span id="header-color"><%- include('header.ejs')%></span>
+<main id="main">
+  <div id="image">
+    <img
+      src="<%=showObj.link%>"
+      alt=""
+      onerror="this.onerror=null; this.src='/images/image.png'"
+    />
+  </div>
+  <div id="information">
+    <div id="name"><%=showObj.name%></div>
+    <div id="year"><%=showObj.year%></div>
+    <div id="genre"><%=showObj.genre%></div>
+    <div id="rating">
+      <img src="/images/imdbLogo.svg" /> &nbsp; &nbsp; &nbsp; 10.0
+    </div>
+    <div id="actors">Actors</div>
+    <div id="actorsName"><%=showObj.actors%></div>
+    <div id="overview">overview</div>
+    <div id="content"><%=showObj.description%></div>
+  </div>
+</main>
+
+<a href="/login"
+  ><button class="button" id="submit-button">Login to review</button></a
+>
+
+<%}else{%> <%- include('header.ejs')%>
+<main id="main">
+  <div id="image">
+    <img
+      src="<%=showObj.link%>"
+      alt=""
+      onerror="this.onerror=null; this.src='/images/image.png'"
+    />
+  </div>
+  <div id="information">
+    <div id="name"><%=showObj.name%></div>
+    <div id="year"><%=showObj.year%></div>
+    <div id="genre"><%=showObj.genre%></div>
+    <div id="rating">
+      <img src="/images/imdbLogo.svg" /> &nbsp; &nbsp; &nbsp; 10.0
+    </div>
+    <div id="actors">Actors</div>
+    <div id="actorsName"><%=showObj.actors%></div>
+    <div id="overview">overview</div>
+    <div id="content"><%=showObj.description%></div>
+  </div>
+</main>
+<div id="all-reviews">
+  <div>
+    <form id="review" action="<%=post_req%>" method="POST">
+      <label for="comment"> enter comment here </label>
+      <br />
+      <textarea
+        type="text"
+        name="comment"
+        id="comment"
+        autocomplete="off"
+      ></textarea>
+      <input type="hidden" name="email" id="email" value="<%=userEmail%>" />
+      <button type="submit" id="submit-button">SUBMIT</button>
+    </form>
+  </div>
+  <div>
+    <%if(comments.length!=0){%> <%for(x in comments){%>
+    <div id="saved">
+      <div><%=comments[x]%></div>
+      <div>by <%=email[x]%></div>
+    </div>
+    <br />
+    <%}%> <%}%>
+  </div>
+</div>
 <%}%>
-<br />

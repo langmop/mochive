@@ -1,12 +1,14 @@
-<%if(name==null){%>
-<h1>hii Mochiver</h1>
-<a href="/login">login</a>
-<br />
-<a href="/register">register</a>
-<%}else{%>
-<h1>hii <%=name%></h1>
-<br />
-<a href="/logout">logout</a>
-<%}%>
-<br />
-<a href="/movie/1">movie1</a>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie App</title>
+    <link href="/css/overall.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <%- include('header.ejs')%> <%-
+    include('main',{imageLinks:imageLinks,movieNames:movieNames,description:description,movieId:movieId})%>
+  </body>
+</html>
